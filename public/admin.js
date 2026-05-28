@@ -67,6 +67,7 @@ async function loadProductsTable() {
 
 async function editProduct(id) {
   const p = await fetch(API+'/api/products/'+id).then(r=>r.json());
+  showTab('addProduct', null);
   document.getElementById('editProductId').value = p.id;
   document.getElementById('pName').value = p.name;
   document.getElementById('pPrice').value = p.price;
@@ -75,7 +76,6 @@ async function editProduct(id) {
   document.getElementById('pDesc').value = p.description;
   document.getElementById('pImage').value = p.image;
   document.getElementById('productFormTitle').textContent = 'Edit Product';
-  showTab('addProduct', null);
   document.querySelector('.sidebar a:nth-child(3)').classList.add('active');
 }
 
