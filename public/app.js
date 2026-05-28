@@ -2,6 +2,17 @@ const API = '';
 let products = [];
 let cart = [];
 
+function getCategoryEmoji(cat) {
+  if (!cat) return '🥤';
+  const c = cat.toLowerCase();
+  if (c.includes('bière') || c.includes('biere') || c.includes('beer')) return '🍺';
+  if (c.includes('gazeuse') || c.includes('soda') || c.includes('cola')) return '🥤';
+  if (c.includes('énergi') || c.includes('energi')) return '⚡';
+  if (c.includes('eau') || c.includes('water')) return '💧';
+  if (c.includes('jus') || c.includes('juice') || c.includes('fruit')) return '🍊';
+  return '🛍';
+}
+
 async function loadProducts() {
   try {
     const res = await fetch(API + '/api/products');
@@ -15,20 +26,25 @@ async function loadProducts() {
 function renderProducts() {
   const grid = document.getElementById('productsGrid');
   if (!products.length) { grid.innerHTML = '<p>No products available.</p>'; return; }
-  grid.innerHTML = products.map(p => `
-    <div class="product-card">
-      <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/200x150?text=Product'" />
-      <div class="product-info">
-        <h3>${p.name}</h3>
-        <div class="category">${p.category}</div>
-        <div class="desc">${p.description}</div>
-        <div class="product-footer">
-          <div><span class="price">$${parseFloat(p.price).toFixed(2)}</span><br/><span class="stock">Stock: ${p.stock}</span></div>
-          <button class="add-btn" onclick="addToCart(${p.id})" ${p.stock < 1 ? 'disabled style="opacity:0.5"' : ''}>${p.stock < 1 ? 'Out of Stock' : 'Add to Cart'}</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
+  grid.innerHTML = products.map(p => {
+    const img = p.image
+      ? '<img src="' + p.image + '" alt="' + p.name + '" style="width:100%;height:150px;object-fit:cover" />'
+      : '<div style="width:100%;height:150px;background:linear-gradient(135deg,#1a1a2e,#16213e);display:flex;align-items:center;justify-content:center;font-size:3.5rem">' + getCategoryEmoji(p.category) + '</div>';
+    const disabled = p.stock < 1 ? 'disabled style="opacity:0.5"' : '';
+    const btnText = p.stock < 1 ? 'Out of Stock' : 'Add to Cart';
+    return '<div class="product-card">' +
+      img +
+      '<div class="product-info">' +
+        '<h3>' + p.name + '</h3>' +
+        '<div class="category">' + p.category + '</div>' +
+        '<div class="desc">' + p.description + '</div>' +
+        '<div class="product-footer">' +
+          '<div><span class="price">$' + parseFloat(p.price).toFixed(2) + '</span><br/><span class="stock">Stock: ' + p.stock + '</span></div>' +
+          '<button class="add-btn" onclick="addToCart(\'' + p.id + '\')" ' + disabled + '>' + btnText + '</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
 }
 
 function addToCart(id) {
@@ -56,15 +72,15 @@ function updateCartUI() {
     formDiv.style.display = 'none';
     return;
   }
-  itemsDiv.innerHTML = cart.map(c => `
-    <div class="cart-item">
-      <div><div class="cart-item-name">${c.name}</div><div class="cart-item-sub">$${c.price.toFixed(2)} x ${c.qty}</div></div>
-      <div style="display:flex;align-items:center;gap:12px;">
-        <span class="cart-item-price">$${(c.price * c.qty).toFixed(2)}</span>
-        <button class="remove-btn" onclick="removeFromCart(${c.id})">X</button>
-      </div>
-    </div>
-  `).join('');
+  itemsDiv.innerHTML = cart.map(c =>
+    '<div class="cart-item">' +
+      '<div><div class="cart-item-name">' + c.name + '</div><div class="cart-item-sub">$' + c.price.toFixed(2) + ' x ' + c.qty + '</div></div>' +
+      '<div style="display:flex;align-items:center;gap:12px;">' +
+        '<span class="cart-item-price">$' + (c.price * c.qty).toFixed(2) + '</span>' +
+        '<button class="remove-btn" onclick="removeFromCart(\'' + c.id + '\')">X</button>' +
+      '</div>' +
+    '</div>'
+  ).join('');
   totalDiv.textContent = 'Total: $' + total.toFixed(2);
   formDiv.style.display = 'block';
 }
