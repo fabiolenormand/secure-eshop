@@ -1,0 +1,8 @@
+[
+  { "id": 1, "name": "Laptop Pro 15", "price": 1299.99, "description": "High-performance laptop with 16GB RAM", "category": "Electronics", "stock": 10, "image": "https://via.placeholder.com/200x150?text=Laptop" },
+  { "id": 2, "name": "Wireless Mouse", "price": 29.99, "description": "Ergonomic wireless mouse, 2.4GHz", "category": "Accessories", "stock": 50, "image": "https://via.placeholder.com/200x150?text=Mouse" },
+  { "id": 3, "name": "Mechanical Keyboard", "price": 89.99, "description": "RGB backlit mechanical keyboard", "category": "Accessories", "stock": 25, "image": "https://via.placeholder.com/200x150?text=Keyboard" },
+  { "id": 4, "name": "4K Monitor", "price": 449.99, "description": "27-inch 4K IPS display", "category": "Electronics", "stock": 15, "image": "https://via.placeholder.com/200x150?text=Monitor" },
+  { "id": 5, "name": "USB-C Hub", "price": 49.99, "description": "7-in-1 USB-C hub with HDMI", "category": "Accessories", "stock": 40, "image": "https://via.placeholder.com/200x150?text=Hub" },
+  { "id": 6, "name": "Headphones", "price": 199.99, "description": "Noise-cancelling over-ear headphones", "category": "Audio", "stock": 20, "image": "https://via.placeholder.com/200x150?text=Headphones" }
+]
