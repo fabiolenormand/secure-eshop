@@ -107,9 +107,7 @@ async function placeOrder() {
     });
     var data = await res.json();
     if (res.ok) {
-      msgDiv.textContent = 'Order placed! Thank you, ' + name + '.';
-      msgDiv.className = 'msg success';
-      cart = []; updateCartUI();
+      cart = []; updateCartUI(); showOrderSuccess(name);
       document.getElementById('custName').value = '';
       document.getElementById('custEmail').value = '';
     } else {
@@ -123,3 +121,17 @@ async function placeOrder() {
 }
 
 loadProducts();
+
+function showOrderSuccess(name) {
+  var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;';
+      overlay.innerHTML = '<div style="background:white;border-radius:16px;padding:40px;text-align:center;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3);">'
+          + '<div style="font-size:3rem;margin-bottom:16px;">✅</div>'
+              + '<h2 style="color:#1a1a2e;margin-bottom:12px;">Order Confirmed!</h2>'
+                  + '<p style="color:#555;font-size:1rem;">Thank you, <strong>' + name + '</strong>!<br>Your order has been placed successfully.</p>'
+                      + '<button onclick="this.closest(\'[data-ov]\').remove()" style="margin-top:24px;background:#e94560;color:white;border:none;padding:12px 32px;border-radius:10px;font-size:1rem;cursor:pointer;">OK</button>'
+                          + '</div>';
+                            overlay.setAttribute('data-ov', '1');
+                              document.body.appendChild(overlay);
+                                setTimeout(function() { if (overlay.parentNode) overlay.remove(); }, 5000);
+                                }
