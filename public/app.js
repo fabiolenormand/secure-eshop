@@ -2,16 +2,6 @@ const API = '';
 let products = [];
 let cart = [];
 
-function getPlaceholder(cat) {
-  var c = (cat || '').toLowerCase();
-  if (c.indexOf('biere') >= 0 || c.indexOf('beer') >= 0) return {bg:'#f6a623',label:'Biere'};
-  if (c.indexOf('gazeuse') >= 0 || c.indexOf('cola') >= 0) return {bg:'#e94560',label:'Soda'};
-  if (c.indexOf('energi') >= 0) return {bg:'#2d2d2d',label:'Energy'};
-  if (c.indexOf('eau') >= 0 || c.indexOf('water') >= 0) return {bg:'#00bcd4',label:'Eau'};
-  if (c.indexOf('jus') >= 0 || c.indexOf('fruit') >= 0) return {bg:'#ff9800',label:'Jus'};
-  return {bg:'#1a1a2e',label:'Boisson'};
-}
-
 async function loadProducts() {
   try {
     const res = await fetch(API + '/api/products');
@@ -28,17 +18,13 @@ function renderProducts() {
   var html = '';
   for (var i = 0; i < products.length; i++) {
     var p = products[i];
-    var ph = getPlaceholder(p.category);
-    var imgHtml = p.image
-      ? '<img src="' + p.image + '" alt="' + p.name + '" style="width:100%;height:150px;object-fit:cover" />'
-      : '<div style="width:100%;height:150px;background:' + ph.bg + ';display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:white;font-weight:bold;letter-spacing:1px;">' + ph.label + '</div>';
-    html += '<div class="product-card">' + imgHtml +
+    html += '<div class="product-card">' +
       '<div class="product-info">' +
         '<h3>' + p.name + '</h3>' +
         '<div class="category">' + p.category + '</div>' +
         '<div class="desc">' + p.description + '</div>' +
         '<div class="product-footer">' +
-          '<span class="price">$' + parseFloat(p.price).toFixed(2) + '</span>' +
+          '<span class="price">' + parseFloat(p.price).toFixed(0) + ' Kc</span>' +
           '<button class="add-btn" data-id="' + p.id + '">Add to Cart</button>' +
         '</div>' +
       '</div>' +
@@ -88,14 +74,14 @@ function updateCartUI() {
     var c = cart[j];
     html += '<div class="cart-item">' +
       '<div><div class="cart-item-name">' + c.name + '</div>' +
-      '<div class="cart-item-sub">$' + c.price.toFixed(2) + ' x ' + c.qty + '</div></div>' +
+      '<div class="cart-item-sub">' + parseFloat(c.price).toFixed(0) + ' Kc x ' + c.qty + '</div></div>' +
       '<div style="display:flex;align-items:center;gap:12px;">' +
-        '<span class="cart-item-price">$' + (c.price * c.qty).toFixed(2) + '</span>' +
+        '<span class="cart-item-price">' + (c.price * c.qty).toFixed(0) + ' Kc</span>' +
         '<button class="remove-btn" data-id="' + c.id + '">X</button>' +
       '</div></div>';
   }
   itemsDiv.innerHTML = html;
-  totalDiv.textContent = 'Total: $' + total.toFixed(2);
+  totalDiv.textContent = 'Total: ' + total.toFixed(0) + ' Kc';
   formDiv.style.display = 'block';
 }
 
