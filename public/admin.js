@@ -60,8 +60,8 @@ function renderChart(orders) {
 async function loadProductsTable() {
   const products = await fetch(API+'/api/products').then(r=>r.json());
   document.getElementById('productsTable').innerHTML = products.map(p=>`
-    <tr><td>${p.id}</td><td><strong>${p.name}</strong></td><td>$${parseFloat(p.price).toFixed(2)}</td><td>${p.category}</td><td>${p.stock}</td>
-    <td><button class="btn btn-edit" onclick="editProduct(${p.id})">Edit</button> <button class="btn btn-del" onclick="deleteProduct(${p.id})">Delete</button></td></tr>
+    <tr><td>${p.id}</td><td><strong>${p.name}</strong></td><td>${parseFloat(p.price).toFixed(0)} Kc</td><td>${p.category}</td><td>${p.stock}</td>
+    <td><button class="btn btn-edit" onclick="editProduct('${p.id}')">Edit</button> <button class="btn btn-del" onclick="deleteProduct('${p.id}')">Delete</button></td></tr>
   `).join('') || '<tr><td colspan="6" style="text-align:center">No products</td></tr>';
 }
 
@@ -104,14 +104,14 @@ async function deleteProduct(id) {
 async function loadOrdersTable() {
   const orders = await fetch(API+'/api/orders',{headers:authHeaders()}).then(r=>r.json()).catch(()=>[]);
   document.getElementById('ordersTable').innerHTML = orders.map(o=>`
-    <tr><td>${o.id}</td><td>${o.customerName}</td><td>${o.customerEmail}</td><td>$${parseFloat(o.total).toFixed(2)}</td>
-    <td><select onchange="updateOrderStatus(${o.id},this.value)">
+    <tr><td>${o.id}</td><td>${o.customerName}</td><td>${o.customerEmail}</td><td>${parseFloat(o.total).toFixed(0)} Kc</td>
+    <td><select onchange="updateOrderStatus('${o.id}',this.value)">
       <option value="pending" ${o.status==='pending'?'selected':''}>Pending</option>
       <option value="completed" ${o.status==='completed'?'selected':''}>Completed</option>
       <option value="cancelled" ${o.status==='cancelled'?'selected':''}>Cancelled</option>
     </select></td>
     <td>${new Date(o.createdAt).toLocaleDateString()}</td>
-    <td><button class="btn btn-del" onclick="deleteOrder(${o.id})">Delete</button></td></tr>
+    <td><button class="btn btn-del" onclick="deleteOrder('${o.id}')">Delete</button></td></tr>
   `).join('') || '<tr><td colspan="7" style="text-align:center">No orders yet</td></tr>';
 }
 
