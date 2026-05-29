@@ -5,7 +5,7 @@ let chartInstance = null;
 window.addEventListener('load', () => { if (token) showAdmin(); });
 
 async function doLogin() {
-  const username = document.getElementById('loginUser').value.trim();
+  const username = document.getElementById('loginUhser').value.trim();
   const password = document.getElementById('loginPass').value.trim();
   const errDiv = document.getElementById('loginErr');
   errDiv.textContent = '';
@@ -74,13 +74,13 @@ async function editProduct(id) {
   document.getElementById('pCategory').value = p.category;
   document.getElementById('pStock').value = p.stock;
   document.getElementById('pDesc').value = p.description;
-  document.getElementById('pImage').value = p.image;
+
   document.getElementById('productFormTitle').textContent = 'Edit Product';
   document.querySelector('.sidebar a:nth-child(3)').classList.add('active');
 }
 
 function resetProductForm() {
-  ['editProductId','pName','pPrice','pCategory','pStock','pDesc','pImage'].forEach(id => document.getElementById(id).value='');
+  ['editProductId','pName','pPrice','pCategory','pStock','pDesc'].forEach(id => document.getElementById(id).value='');
   document.getElementById('productFormTitle').textContent = 'Add Product';
   document.getElementById('productMsg').style.display = 'none';
 }
@@ -88,7 +88,7 @@ function resetProductForm() {
 async function saveProduct() {
   const id = document.getElementById('editProductId').value;
   const msgDiv = document.getElementById('productMsg');
-  const body = { name:document.getElementById('pName').value.trim(), price:parseFloat(document.getElementById('pPrice').value), category:document.getElementById('pCategory').value.trim()||'General', stock:parseInt(document.getElementById('pStock').value)||0, description:document.getElementById('pDesc').value.trim(), image:document.getElementById('pImage').value.trim() };
+  const body = { name:document.getElementById('pName').value.trim(), price:parseFloat(document.getElementById('pPrice').value), category:document.getElementById('pCategory').value.trim()||'General', stock:parseInt(document.getElementById('pStock').value)||0, description:document.getElementById('pDesc').value.trim() };
   if (!body.name||isNaN(body.price)) { showMsg(msgDiv,'Name and price required.',false); return; }
   const res = await fetch(API+'/api/products'+(id?'/'+id:''), {method:id?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});
   const data = await res.json();
